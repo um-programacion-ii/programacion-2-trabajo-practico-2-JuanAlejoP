@@ -1,0 +1,42 @@
+name: Solicitud de desarrollo
+description: Usar para describir tareas o funcionalidades a implementar
+title: "[Funcionalidad]: "
+labels: ["enhancement"]
+assignees: []
+
+body:
+- type: markdown
+  attributes:
+  value: "## Descripción\nDescribe brevemente la funcionalidad a desarrollar."
+
+- type: textarea
+  id: descripcion
+  attributes:
+  label: Descripción
+  description: Describe la funcionalidad que se va a implementar.
+  placeholder: Crear el sistema de préstamos que utilice hilos y el patrón productor-consumidor para procesar solicitudes de préstamo en tiempo real.
+  validations:
+  required: true
+
+- type: textarea
+  id: requisitos
+  attributes:
+  label: Requisitos
+  description: Lista de requerimientos técnicos o funcionales.
+  placeholder: |
+  - Implementar `BlockingQueue` para solicitudes de préstamo
+  - Crear procesador de solicitudes usando `ExecutorService`
+  - Implementar sistema de notificaciones
+  - Asegurar thread-safety en operaciones de préstamo
+  validations:
+  required: true
+
+- type: checkboxes
+  id: criterios
+  attributes:
+  label: Criterios de Aceptación
+  description: Lista de condiciones necesarias para considerar completa la tarea.
+  options:
+  - label: Sistema procesa préstamos concurrentemente
+  - label: Manejo adecuado de excepciones
+  - label: Documentación de diseño
