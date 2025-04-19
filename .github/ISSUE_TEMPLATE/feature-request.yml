@@ -15,26 +15,14 @@ body:
       required: true
 
   - type: textarea
-    id: requisitos
+    id: tareas
     attributes:
-      label: Requisitos
-      description: Lista de requerimientos técnicos o funcionales.
+      label: Tareas
+      description: Lista las tareas a completar para terminar la implementación.
       placeholder: |
-        - Implementar `BlockingQueue` para solicitudes de préstamo
-        - Crear procesador de solicitudes usando `ExecutorService`
-        - Implementar sistema de notificaciones
-        - Asegurar thread-safety en operaciones de préstamo
+        - [ ] Implementar `BlockingQueue` para solicitudes de préstamo
+        - [ ] Manejar excepciones adecuadamente
+        - [ ] Compilar código sin errores
+        - [ ] Agregar o actualizar documentación
     validations:
       required: true
-
-  - type: textarea
-    id: criterios
-    attributes:
-      label: Criterios de Aceptación
-      description: Ingresá las condiciones que debe cumplir esta funcionalidad para considerarse terminada.
-      placeholder: |
-        - [ ] El sistema procesa préstamos concurrentemente
-        - [ ] Manejo adecuado de excepciones
-        - [ ] Documentación actualizada
-    validations:
-      required: false
