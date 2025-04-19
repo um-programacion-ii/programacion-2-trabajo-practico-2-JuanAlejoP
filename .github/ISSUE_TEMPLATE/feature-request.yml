@@ -1,19 +1,15 @@
 name: Solicitud de desarrollo
 description: Usar para describir tareas o funcionalidades a implementar
-title: "[Funcionalidad]: "
+title: "[Funcionalidad]: Implementar sistema de préstamos concurrente"
 labels: ["enhancement"]
 assignees: []
 
 body:
-  - type: markdown
-    attributes:
-      value: "## Descripción\nDescribe brevemente la funcionalidad a desarrollar."
-
   - type: textarea
     id: descripcion
     attributes:
       label: Descripción
-      description: Describe la funcionalidad que se va a implementar.
+      description: Describe brevemente la funcionalidad a implementar.
       placeholder: Crear el sistema de préstamos que utilice hilos y el patrón productor-consumidor para procesar solicitudes de préstamo en tiempo real.
     validations:
       required: true
@@ -31,12 +27,14 @@ body:
     validations:
       required: true
 
-  - type: checkboxes
+  - type: textarea
     id: criterios
     attributes:
       label: Criterios de Aceptación
-      description: Lista de condiciones necesarias para considerar completa la tarea.
-      options:
-        - label: Sistema procesa préstamos concurrentemente
-        - label: Manejo adecuado de excepciones
-        - label: Documentación de diseño
+      description: Ingresá las condiciones que debe cumplir esta funcionalidad para considerarse terminada.
+      placeholder: |
+        - [ ] El sistema procesa préstamos concurrentemente
+        - [ ] Manejo adecuado de excepciones
+        - [ ] Documentación actualizada
+    validations:
+      required: false
