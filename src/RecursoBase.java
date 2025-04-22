@@ -25,4 +25,3 @@ public abstract class RecursoBase implements RecursoDigital {
         this.estado = nuevoEstado;
     };
 }
-
