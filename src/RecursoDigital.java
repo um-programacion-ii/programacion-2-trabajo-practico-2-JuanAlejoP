@@ -1,27 +1,9 @@
-public abstract class RecursoDigital {
-    private String id;
-    private String titulo;
-    private EstadoRecurso estado;
+public interface RecursoDigital {
+    public abstract String getIdentificador();
 
-    public RecursoDigital(String id, String titulo, EstadoRecurso estado) {
-        this.id = id;
-        this.titulo = titulo;
-        this.estado = estado;
-    }
+    public abstract String getTitulo();
 
-    public String getIdentificador() {
-        return id;
-    }
+    public abstract EstadoRecurso getEstado();
 
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public EstadoRecurso getEstado() {
-        return estado;
-    }
-
-    public abstract void actualizarEstado(EstadoRecurso estado);
-
-
+    public abstract void actualizarEstado(EstadoRecurso nuevoEstado);
 }
