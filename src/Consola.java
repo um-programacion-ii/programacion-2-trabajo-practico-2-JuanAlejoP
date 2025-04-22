@@ -1,11 +1,16 @@
 import java.util.Scanner;
 import java.util.InputMismatchException;
+import java.util.Collection;
 
 public class Consola {
     private Scanner scanner;
+    private GestorUsuarios userManager;
+    private GestorRecursos resourceManager;
 
     public Consola() {
         this.scanner = new Scanner(System.in);
+        this.userManager = new GestorUsuarios();
+        this.resourceManager = new GestorRecursos();
     }
 
     public void showMainMenu() {
@@ -40,80 +45,10 @@ public class Consola {
         }
     }
     private void manageUsers() {
-        while (true) {
-            int option = showUsersMenu();
-            switch (option) {
-                case 1:
-                    // agregarUsuario();
-                    break;
-                case 2:
-                    // buscarUsuario();
-                    break;
-                case 3:
-                    // listarUsuarios();
-                    break;
-                case 0:
-                    return;
-                default:
-                    System.out.println("Opción inválida.");
-            }
-        }
-    }
-
-    private int showUsersMenu() {
-        System.out.println("--- Gestión de Usuarios ---");
-        System.out.println("1. Agregar nuevo usuario");
-        System.out.println("2. Buscar usuario por ID");
-        System.out.println("3. Listar todos los usuarios");
-        System.out.println("0. Volver al menú principal");
-        System.out.print("Ingrese una opción: ");
-        try {
-            int option = scanner.nextInt();
-            scanner.nextLine();
-            return option;
-        } catch (InputMismatchException e) {
-            scanner.nextLine();
-            System.out.println("Entrada inválida. Intente de nuevo.");
-            return -1;
-        }
+        System.out.println("Gestión de usuarios aún no implementada.");
     }
 
     private void manageResources() {
-        while (true) {
-            int option = showResourcesMenu();
-            switch (option) {
-                case 1:
-                    // agregarRecurso();
-                    break;
-                case 2:
-                    // buscarRecurso();
-                    break;
-                case 3:
-                    // listarRecursos();
-                    break;
-                case 0:
-                    return;
-                default:
-                    System.out.println("Opción inválida.");
-            }
-        }
-    }
-
-    private int showResourcesMenu() {
-        System.out.println("--- Gestión de Recursos ---");
-        System.out.println("1. Agregar nuevo recurso");
-        System.out.println("2. Buscar recurso por ID");
-        System.out.println("3. Listar todos los recursos");
-        System.out.println("0. Volver al menú principal");
-        System.out.print("Ingrese una opción: ");
-        try {
-            int option = scanner.nextInt();
-            scanner.nextLine();
-            return option;
-        } catch (InputMismatchException e) {
-            scanner.nextLine();
-            System.out.println("Entrada inválida. Intente de nuevo.");
-            return -1;
-        }
+        System.out.println("Gestión de recursos aún no implementada.");
     }
 }

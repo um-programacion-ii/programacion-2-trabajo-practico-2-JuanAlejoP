@@ -15,7 +15,7 @@ public class GestorUsuarios {
         usuarios.put(id, usuario);
     }
 
-    public Usuario searchUser(String id) {
+    public Usuario searchUserById(String id) {
         Usuario usuario = usuarios.get(id);
         return usuario;
     }

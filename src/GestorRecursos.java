@@ -15,7 +15,7 @@ public class GestorRecursos {
         recursos.put(id, recursoDigital);
     }
 
-    public RecursoDigital searchResource(String id) {
+    public RecursoDigital searchResourceById(String id) {
         RecursoDigital recursoDigital = recursos.get(id);
         return recursoDigital;
     }
