@@ -1,19 +1,18 @@
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class GestorUsuarios {
-    private Map<String, Usuario> usuarios;
+    private ConcurrentMap<String, Usuario> usuarios;
     private ServicioNotificaciones servicioNotificaciones;
 
     public GestorUsuarios(ServicioNotificaciones servicioNotificaciones) {
-        this.usuarios = new HashMap<>();
+        this.usuarios = new ConcurrentHashMap<>();
         this.servicioNotificaciones = servicioNotificaciones;
     }
 
     public void addNewUser(Usuario usuario) {
-        String id = usuario.getId();
-        usuarios.put(id, usuario);
+        usuarios.put(usuario.getId(), usuario);
     }
 
     public Usuario searchUserById(String id) {
