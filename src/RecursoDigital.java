@@ -6,4 +6,8 @@ public interface RecursoDigital {
     public abstract EstadoRecurso getEstado();
 
     public abstract void actualizarEstado(EstadoRecurso nuevoEstado);
+
+    public abstract CategoriaRecurso getCategoria();
+
+    public abstract void setCategoria(CategoriaRecurso categoria);
 }
