@@ -6,12 +6,15 @@ public class Consola {
     private Scanner scanner;
     private GestorUsuarios userManager;
     private GestorRecursos resourceManager;
+    private ServicioNotificaciones notifications;
 
-    public Consola() {
+    public Consola(ServicioNotificaciones notifications) {
         this.scanner = new Scanner(System.in);
-        this.userManager = new GestorUsuarios();
+        this.notifications = notifications;
+        this.userManager = new GestorUsuarios(notifications);
         this.resourceManager = new GestorRecursos();
     }
+
 
     public void showMainMenu() {
         System.out.println("----- Menú Principal -----");
@@ -45,7 +48,82 @@ public class Consola {
         }
     }
     private void manageUsers() {
-        System.out.println("Gestión de usuarios aún no implementada.");
+        while (true) {
+            int option = showUsersMenu();
+            switch (option) {
+                case 1:
+                    addUser();
+                    break;
+                case 2:
+                    searchUser();
+                    break;
+                case 3:
+                    listUsers();
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println("Opción inválida.");
+            }
+        }
+    }
+
+    private int showUsersMenu() {
+        System.out.println("--- Gestión de Usuarios ---");
+        System.out.println("1. Agregar nuevo usuario");
+        System.out.println("2. Buscar usuario por ID");
+        System.out.println("3. Listar todos los usuarios");
+        System.out.println("0. Volver al menú principal");
+        System.out.print("Ingrese una opción: ");
+        try {
+            int option = scanner.nextInt();
+            scanner.nextLine();
+            return option;
+        } catch (InputMismatchException e) {
+            scanner.nextLine();
+            System.out.println("Entrada inválida. Intente de nuevo.");
+            return -1;
+        }
+    }
+
+    private void addUser() {
+        System.out.println("Ingrese el nombre del usuario: ");
+        String name = scanner.nextLine();
+        System.out.println("Ingrese ID del usuario: ");
+        String id = scanner.nextLine();
+        System.out.println("Ingrese email del usuario: ");
+        String email = scanner.nextLine();
+        System.out.println("Ingrese telefono del usuario: ");
+        String telefono = scanner.nextLine();
+        userManager.addNewUser(new Usuario(name, id, email, telefono));
+        System.out.println("Usuario agregado exitosamente.");
+    }
+
+    private void searchUser() {
+        System.out.println("Ingrese ID del usuario a buscar: ");
+        String id = scanner.nextLine();
+        Usuario usuario = userManager.searchUserById(id);
+        System.out.println("--- Datos del Usuario ---");
+        System.out.println("Nombre: " + usuario.getNombre());
+        System.out.println("ID: " + usuario.getId());
+        System.out.println("Email: " + usuario.getEmail());
+    }
+
+    private void listUsers() {
+        Collection<Usuario> usuarios = userManager.listAllUsers();
+        System.out.println("---- Lista de Usuarios ----");
+        if (usuarios.isEmpty()) {
+            System.out.println("No hay usuarios registrados.");
+            return;
+        }
+        System.out.printf("%-3s %-15s %-12s %-25s%n", "#", "Nombre", "ID", "Email");
+        System.out.println("--------------------------------------------------------");
+        int i = 1;
+        for (Usuario usuario : usuarios) {
+            System.out.printf("%-3d %-15s %-12s %-25s%n", i++, usuario.getNombre(), usuario.getId(), usuario.getEmail());
+        }
+        System.out.println("--------------------------------------------------------");
+        System.out.println("Total de usuarios: " + usuarios.size());
     }
 
     private void manageResources() {
