@@ -56,7 +56,7 @@ public class Consola {
                     addResource();
                     break;
                 case 2:
-                    // Falta implementar
+                    searchResource();
                     break;
                 case 3:
                     listResources();
@@ -119,6 +119,18 @@ public class Consola {
         System.out.println("Recurso agregado exitosamente.");
     }
 
+    private void searchResource() {
+        System.out.println("Ingrese ID del recurso a buscar: ");
+        String id = scanner.nextLine();
+        RecursoDigital recurso = resourceManager.searchResourceById(id);
+        System.out.println("--- Datos del Recurso ---");
+        System.out.println("ID: " + recurso.getIdentificador());
+        System.out.println("Título: " + recurso.getTitulo());
+        System.out.println("Status: " + recurso.getEstado());
+        showResourceOptions(recurso);
+
+    }
+
     private void listResources() {
         Collection<RecursoDigital> recursos = resourceManager.listAllResources();
         System.out.println("---- Lista de Recursos ----");
@@ -135,5 +147,19 @@ public class Consola {
         }
         System.out.println("--------------------------------------------------------");
         System.out.println("Total de recursos: " + recursos.size());
+    }
+
+    private void showResourceOptions(RecursoDigital recurso) {
+        System.out.println("--- Opciones para el recurso ---");
+        if (recurso instanceof Prestable) {
+            System.out.println("P. Prestar recurso");
+        }
+
+        if (recurso instanceof Renovable) {
+            System.out.println("R. Renovar recurso");
+        }
+        if (!(recurso instanceof Prestable) && !(recurso instanceof Renovable)) {
+            System.out.println("!. Este recurso no puede ser prestado ni renovado.");
+        }
     }
 }
