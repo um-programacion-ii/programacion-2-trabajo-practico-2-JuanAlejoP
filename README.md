@@ -1,3 +1,4 @@
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/tc38IXJF)
 # 📚 Trabajo Práctico: Sistema de Gestión de Biblioteca Digital (Java 21+)
 
 ## 📌 Objetivo General
@@ -5,28 +6,175 @@
 Desarrollar un sistema de gestión de biblioteca digital que implemente los cinco principios SOLID, programación orientada a objetos, y conceptos avanzados de Java. El sistema deberá manejar diferentes tipos de recursos digitales, préstamos, reservas, y notificaciones en tiempo real.
 
 ## 👨‍🎓 Información del Alumno
-- **Nombre y Apellido**: [Nombre y Apellido del Alumno]
+- **Nombre y Apellido**: Juan Alejo Patiño
+## 🧑‍💻 Guía de Uso del Sistema
 
+#### 📐 Arquitectura General
+El sistema sigue una arquitectura orientada a objetos, basada en los principios SOLID. Cada clase tiene una responsabilidad específica y las dependencias están abstraídas mediante interfaces.
+
+#### 🧩 Componentes Principales
+- `Usuario`, `GestorUsuarios`: manejo de usuarios
+- `RecursoDigital`, `Libro`, `Revista`, `Audiolibro`: gestión de recursos
+- `GestorRecursos`: operaciones de alta, baja, modificación y búsqueda de recursos
+- `Prestamo`, `Reserva`, `SistemaPrestamos`: lógica de préstamos y reservas
+- `ServicioNotificaciones`: envío de alertas y notificaciones
+- `GeneradorReportes`: estadísticas y análisis
+- `Consola`: clase principal con todos los menús, navegación y lógica de interacción con el usuario
+- `Main`: clase de arranque que instancia `Consola` y lanza el sistema
+
+#### 🔁 Flujo de Trabajo
+1. Se inicia el sistema desde la clase `Main`, que crea una instancia de `Consola`.
+2. `Consola` despliega el menú principal e interactúa con el usuario.
+3. Desde los submenús se puede registrar usuarios, agregar recursos, gestionar préstamos, reservas, devoluciones, renovaciones, alertas y reportes.
+4. El sistema valida las entradas, gestiona excepciones y muestra los resultados por consola.
+
+---
+
+### 🚀 ¿Cómo ponerlo en funcionamiento?
+
+#### 1. Requisitos Previos
+- Java 21 o superior
+- JDK configurado en el sistema
+- Git (opcional para clonar el repositorio)
+
+#### 2. Clonar Repositorio
+```bash
+git clone git@github.com:um-programacion-ii/programacion-2-trabajo-practico-2-JuanAlejoP.git
+cd programacion-2-trabajo-practico-2-JuanAlejoP
+```
+
+#### 3. Compilar el Proyecto
+```bash
+javac -d bin src/**/*.java
+```
+
+#### 4. Ejecutar la Aplicación
+```bash
+cd bin
+java com.JuanAlejoP.biblioteca.ui.Main
+```
+
+---
+
+### 🧪 ¿Cómo probar cada aspecto desarrollado?
+
+#### Funcionalidades Básicas
+
+**Registro de Usuario**
+- Menú: Gestión de Usuarios → Registrar Usuario
+- Ingresar nombre, ID y email → Confirmar
+- Resultado: mensaje de éxito o error
+
+**Agregar Recurso**
+- Menú: Gestión de Recursos → Agregar Recurso
+- Elegir tipo de recurso (libro, revista, etc.)
+- Ingresar datos → Confirmar
+- Resultado: recurso registrado correctamente
+
+**Buscar Recurso / Usuario**
+- Menú: Buscar → Seleccionar tipo
+- Ingresar criterio (título o ID)
+- Resultado: listado o mensaje de no encontrado
+
+**Préstamo y Devolución**
+- Menú: Préstamos → Realizar Préstamo
+- Seleccionar usuario y recurso
+- Resultado: préstamo registrado
+- Devolver desde el mismo menú → confirmación
+
+**Reserva de Recurso**
+- Menú: Reservas → Reservar Recurso
+- Seleccionar recurso y usuario
+- Resultado: reserva en cola
+
+**Ver Reportes**
+- Menú: Reportes → Seleccionar tipo
+- Resultado: estadísticas mostradas en consola (generadas asincrónicamente)
+
+**Alertas**
+- Al acercarse la fecha de devolución, se muestran alertas en consola
+- El usuario puede renovar desde la alerta si está habilitado
+
+---
+
+### 🔍 Ejemplos Completos
+
+**Caso 1: Préstamo Completo**
+1. Registrar usuario "Ana"
+2. Agregar libro "El Principito"
+3. Realizar préstamo para Ana
+4. Ver estado del recurso → Prestado
+5. Devolver el recurso
+6. Verificar estado → Disponible
+
+**Caso 2: Reserva y Disponibilidad**
+1. Registrar "Lucas" y "María"
+2. Agregar revista "Ciencia Hoy"
+3. María reserva la revista
+4. Lucas la devuelve
+5. Sistema notifica a María
+
+**Caso 3: Alertas por Vencimiento**
+1. Ana toma un préstamo
+2. Se simula paso del tiempo
+3. Consola muestra alerta → opción de renovación
+
+---
+### 📝 Uso de IA
+
+Para el desarrollo de este proyecto he utilizado ChatGPT (OpenAI) siguiendo las pautas de transparencia e integridad académica:
+
+1. **Herramienta**
+    - ChatGPT (modelo GPT-4).
+
+2. **Ámbito de aplicación**
+    - **Diseño y estructura**: consulté cómo organizar paquetes, clases base y aplicar principios SOLID (por ejemplo, cuándo usar `if` vs. `switch`).
+    - **Concurrencia**: obtuve ejemplos de hilos, sincronización y uso de `ExecutorService`.
+    - **Formateo de menús**: sugerencias sobre presentación y lectura de opciones por consola.
+    - **JavaDocs**: generación de plantillas de comentarios y documentación de métodos y clases.
+    - **Issues y Pull Requests**: creación de templates y redacción de descripciones.
+
+3. **Ejemplo de interacción**
+    - **Prompt**:
+      ```text
+      Para aplicar SRP en el diseño base del sistema, indícame paso a paso qué debo implementar (clases, métodos, validaciones…), sin generar el código directamente.
+      ```  
+    - **Respuesta**:
+      ```
+      Guía detallada para crear `Usuario`, `RecursoDigital`, `GestorUsuarios`, `GestorRecursos` y `Consola`, con explicación de cada parte y tareas en formato checklist.
+      ```
+4. **Modificaciones y validación**
+    - El código sugerido por la IA se escribió manualmente y se adaptó para cumplir con los requisitos del proyecto.
+    - Se revisaron y corrigieron errores de la IA en concurrencia y documentación.
+    - La funcionalidad resultante se validó mediante compilación y pruebas manuales.
+
+5. **Aprendizaje y reflexión**
+    - Aprendí a estructurar paquetes en Java, gestionar importaciones y diferenciar sintaxis frente a otros lenguajes (p. ej., Python).
+    - Me familiaricé con librerías estándar para concurrencia y con las buenas prácticas de SOLID.
+    - Identifiqué límites de la IA: en ocasiones la solución propuesta requería ajustes para integrarse correctamente al diseño global.
+
+> **Nota**: La IA se empleó únicamente como herramienta de apoyo y aprendizaje; todo el código final refleja mi propio entendimiento y fue revisado y probado por mí.
+---
 ## 📋 Requisitos Adicionales
 
 ### Documentación del Sistema
 Como parte del trabajo práctico, deberás incluir en este README una guía de uso que explique:
 
 1. **Cómo funciona el sistema**:
-   - Descripción general de la arquitectura
-   - Explicación de los componentes principales
-   - Flujo de trabajo del sistema
+    - Descripción general de la arquitectura
+    - Explicación de los componentes principales
+    - Flujo de trabajo del sistema
 
 2. **Cómo ponerlo en funcionamiento**:
-   - Deberás incluir las instrucciones detalladas de puesta en marcha
-   - Explicar los requisitos previos necesarios
-   - Describir el proceso de compilación
-   - Detallar cómo ejecutar la aplicación
+    - Deberás incluir las instrucciones detalladas de puesta en marcha
+    - Explicar los requisitos previos necesarios
+    - Describir el proceso de compilación
+    - Detallar cómo ejecutar la aplicación
 
 3. **Cómo probar cada aspecto desarrollado**:
-   - Deberás proporcionar ejemplos de uso para cada funcionalidad implementada
-   - Incluir casos de prueba que demuestren el funcionamiento del sistema
-   - Describir flujos de trabajo completos que muestren la interacción entre diferentes componentes
+    - Deberás proporcionar ejemplos de uso para cada funcionalidad implementada
+    - Incluir casos de prueba que demuestren el funcionamiento del sistema
+    - Describir flujos de trabajo completos que muestren la interacción entre diferentes componentes
 
 La guía debe ser clara, concisa y permitir a cualquier usuario entender y probar el sistema. Se valorará especialmente:
 - La claridad de las instrucciones
@@ -37,82 +185,82 @@ La guía debe ser clara, concisa y permitir a cualquier usuario entender y proba
 ### Prueba de Funcionalidades
 
 #### 1. Gestión de Recursos
-- **Agregar Libro**: 
-  - Proceso para agregar un nuevo libro al sistema
-  - Verificación de que el libro se agregó correctamente
-  - Validación de los datos ingresados
+- **Agregar Libro**:
+    - Proceso para agregar un nuevo libro al sistema
+    - Verificación de que el libro se agregó correctamente
+    - Validación de los datos ingresados
 
 - **Buscar Recurso**:
-  - Proceso de búsqueda de recursos
-  - Verificación de resultados de búsqueda
-  - Manejo de casos donde no se encuentran resultados
+    - Proceso de búsqueda de recursos
+    - Verificación de resultados de búsqueda
+    - Manejo de casos donde no se encuentran resultados
 
 - **Listar Recursos**:
-  - Visualización de todos los recursos
-  - Filtrado por diferentes criterios
-  - Ordenamiento de resultados
+    - Visualización de todos los recursos
+    - Filtrado por diferentes criterios
+    - Ordenamiento de resultados
 
 #### 2. Gestión de Usuarios
 - **Registrar Usuario**:
-  - Proceso de registro de nuevos usuarios
-  - Validación de datos del usuario
-  - Verificación del registro exitoso
+    - Proceso de registro de nuevos usuarios
+    - Validación de datos del usuario
+    - Verificación del registro exitoso
 
 - **Buscar Usuario**:
-  - Proceso de búsqueda de usuarios
-  - Visualización de información del usuario
-  - Manejo de usuarios no encontrados
+    - Proceso de búsqueda de usuarios
+    - Visualización de información del usuario
+    - Manejo de usuarios no encontrados
 
 #### 3. Préstamos
 - **Realizar Préstamo**:
-  - Proceso completo de préstamo
-  - Verificación de disponibilidad
-  - Actualización de estados
+    - Proceso completo de préstamo
+    - Verificación de disponibilidad
+    - Actualización de estados
 
 - **Devolver Recurso**:
-  - Proceso de devolución
-  - Actualización de estados
-  - Liberación del recurso
+    - Proceso de devolución
+    - Actualización de estados
+    - Liberación del recurso
 
 #### 4. Reservas
 - **Realizar Reserva**:
-  - Proceso de reserva de recursos
-  - Gestión de cola de reservas
-  - Notificación de disponibilidad
+    - Proceso de reserva de recursos
+    - Gestión de cola de reservas
+    - Notificación de disponibilidad
 
 #### 5. Reportes
 - **Ver Reportes**:
-  - Generación de diferentes tipos de reportes
-  - Visualización de estadísticas
-  - Exportación de datos
+    - Generación de diferentes tipos de reportes
+    - Visualización de estadísticas
+    - Exportación de datos
 
 #### 6. Alertas
 - **Verificar Alertas**:
-  - Sistema de notificaciones
-  - Diferentes tipos de alertas
-  - Gestión de recordatorios
+    - Sistema de notificaciones
+    - Diferentes tipos de alertas
+    - Gestión de recordatorios
 
 ### Ejemplos de Prueba
 1. **Flujo Completo de Préstamo**:
-   - Registrar un usuario
-   - Agregar un libro
-   - Realizar un préstamo
-   - Verificar el estado del recurso
-   - Devolver el recurso
-   - Verificar la actualización del estado
+    - Registrar un usuario
+    - Agregar un libro
+    - Realizar un préstamo
+    - Verificar el estado del recurso
+    - Devolver el recurso
+    - Verificar la actualización del estado
 
 2. **Sistema de Reservas**:
-   - Registrar dos usuarios
-   - Agregar un libro
-   - Realizar una reserva con cada usuario
-   - Verificar la cola de reservas
-   - Procesar las reservas
+    - Registrar dos usuarios
+    - Agregar un libro
+    - Realizar una reserva con cada usuario
+    - Verificar la cola de reservas
+    - Procesar las reservas
 
 3. **Alertas y Notificaciones**:
-   - Realizar un préstamo
-   - Esperar a que se acerque la fecha de vencimiento
-   - Verificar las alertas generadas
-   - Probar la renovación del préstamo
+    - Realizar un préstamo
+    - Esperar a que se acerque la fecha de vencimiento
+    - Verificar las alertas generadas
+    - Probar la renovación del préstamo
 
 ## 🧩 Tecnologías y Herramientas
 
@@ -125,119 +273,119 @@ La guía debe ser clara, concisa y permitir a cualquier usuario entender y proba
 ## 📘 Etapas del Trabajo
 
 ### Etapa 1: Diseño Base y Principios SOLID
-- **SRP**: 
-  - Crear clase `Usuario` con atributos básicos (nombre, ID, email)
-  - Crear clase `RecursoDigital` como clase base abstracta
-  - Implementar clase `GestorUsuarios` separada de `GestorRecursos`
-  - Cada clase debe tener una única responsabilidad clara
-  - Implementar clase `Consola` para manejar la interacción con el usuario
+- **SRP**:
+    - Crear clase `Usuario` con atributos básicos (nombre, ID, email)
+    - Crear clase `RecursoDigital` como clase base abstracta
+    - Implementar clase `GestorUsuarios` separada de `GestorRecursos`
+    - Cada clase debe tener una única responsabilidad clara
+    - Implementar clase `Consola` para manejar la interacción con el usuario
 
-- **OCP**: 
-  - Diseñar interfaz `RecursoDigital` con métodos comunes
-  - Implementar clases concretas `Libro`, `Revista`, `Audiolibro`
-  - Usar herencia para extender funcionalidad sin modificar código existente
-  - Ejemplo: agregar nuevo tipo de recurso sin cambiar clases existentes
-  - Implementar menú de consola extensible para nuevos tipos de recursos
+- **OCP**:
+    - Diseñar interfaz `RecursoDigital` con métodos comunes
+    - Implementar clases concretas `Libro`, `Revista`, `Audiolibro`
+    - Usar herencia para extender funcionalidad sin modificar código existente
+    - Ejemplo: agregar nuevo tipo de recurso sin cambiar clases existentes
+    - Implementar menú de consola extensible para nuevos tipos de recursos
 
-- **LSP**: 
-  - Asegurar que todas las subclases de `RecursoDigital` puedan usarse donde se espera `RecursoDigital`
-  - Implementar métodos comunes en la clase base
-  - Validar que el comportamiento sea consistente en todas las subclases
-  - Crear métodos de visualización en consola para todos los tipos de recursos
+- **LSP**:
+    - Asegurar que todas las subclases de `RecursoDigital` puedan usarse donde se espera `RecursoDigital`
+    - Implementar métodos comunes en la clase base
+    - Validar que el comportamiento sea consistente en todas las subclases
+    - Crear métodos de visualización en consola para todos los tipos de recursos
 
-- **ISP**: 
-  - Crear interfaz `Prestable` para recursos que se pueden prestar
-  - Crear interfaz `Renovable` para recursos que permiten renovación
-  - Implementar solo las interfaces necesarias en cada clase
-  - Diseñar menús de consola específicos para cada tipo de operación
+- **ISP**:
+    - Crear interfaz `Prestable` para recursos que se pueden prestar
+    - Crear interfaz `Renovable` para recursos que permiten renovación
+    - Implementar solo las interfaces necesarias en cada clase
+    - Diseñar menús de consola específicos para cada tipo de operación
 
-- **DIP**: 
-  - Crear interfaz `ServicioNotificaciones`
-  - Implementar `ServicioNotificacionesEmail` y `ServicioNotificacionesSMS`
-  - Usar inyección de dependencias en las clases que necesitan notificaciones
-  - Implementar visualización de notificaciones en consola
+- **DIP**:
+    - Crear interfaz `ServicioNotificaciones`
+    - Implementar `ServicioNotificacionesEmail` y `ServicioNotificacionesSMS`
+    - Usar inyección de dependencias en las clases que necesitan notificaciones
+    - Implementar visualización de notificaciones en consola
 
 ### Etapa 2: Gestión de Recursos y Colecciones
 - Implementar colecciones:
-  - Usar `ArrayList<RecursoDigital>` para almacenar recursos
-  - Usar `Map<String, Usuario>` para gestionar usuarios
-  - Implementar métodos de búsqueda básicos
-  - Crear menú de consola para gestión de recursos
+    - Usar `ArrayList<RecursoDigital>` para almacenar recursos
+    - Usar `Map<String, Usuario>` para gestionar usuarios
+    - Implementar métodos de búsqueda básicos
+    - Crear menú de consola para gestión de recursos
 
 - Crear servicios de búsqueda:
-  - Implementar búsqueda por título usando Streams
-  - Implementar filtrado por categoría
-  - Crear comparadores personalizados para ordenamiento
-  - Diseñar interfaz de consola para búsquedas con filtros
+    - Implementar búsqueda por título usando Streams
+    - Implementar filtrado por categoría
+    - Crear comparadores personalizados para ordenamiento
+    - Diseñar interfaz de consola para búsquedas con filtros
 
 - Sistema de categorización:
-  - Crear enum `CategoriaRecurso`
-  - Implementar método de asignación de categorías
-  - Crear búsqueda por categoría
-  - Mostrar categorías disponibles en consola
+    - Crear enum `CategoriaRecurso`
+    - Implementar método de asignación de categorías
+    - Crear búsqueda por categoría
+    - Mostrar categorías disponibles en consola
 
 - Manejo de excepciones:
-  - Crear `RecursoNoDisponibleException`
-  - Crear `UsuarioNoEncontradoException`
-  - Implementar manejo adecuado de excepciones en los servicios
-  - Mostrar mensajes de error amigables en consola
+    - Crear `RecursoNoDisponibleException`
+    - Crear `UsuarioNoEncontradoException`
+    - Implementar manejo adecuado de excepciones en los servicios
+    - Mostrar mensajes de error amigables en consola
 
 ### Etapa 3: Sistema de Préstamos y Reservas
 - Implementar sistema de préstamos:
-  - Crear clase `Prestamo` con atributos básicos
-  - Implementar lógica de préstamo y devolución
-  - Manejar estados de los recursos (disponible, prestado, reservado)
-  - Diseñar menú de consola para préstamos
+    - Crear clase `Prestamo` con atributos básicos
+    - Implementar lógica de préstamo y devolución
+    - Manejar estados de los recursos (disponible, prestado, reservado)
+    - Diseñar menú de consola para préstamos
 
 - Sistema de reservas:
-  - Crear clase `Reserva` con atributos necesarios
-  - Implementar cola de reservas usando `BlockingQueue`
-  - Manejar prioridad de reservas
-  - Mostrar estado de reservas en consola
+    - Crear clase `Reserva` con atributos necesarios
+    - Implementar cola de reservas usando `BlockingQueue`
+    - Manejar prioridad de reservas
+    - Mostrar estado de reservas en consola
 
 - Notificaciones:
-  - Implementar sistema básico de notificaciones
-  - Crear diferentes tipos de notificaciones
-  - Usar `ExecutorService` para enviar notificaciones
-  - Mostrar notificaciones en consola
+    - Implementar sistema básico de notificaciones
+    - Crear diferentes tipos de notificaciones
+    - Usar `ExecutorService` para enviar notificaciones
+    - Mostrar notificaciones en consola
 
 - Concurrencia:
-  - Implementar sincronización en operaciones de préstamo
-  - Usar `synchronized` donde sea necesario
-  - Manejar condiciones de carrera
-  - Mostrar estado de operaciones concurrentes en consola
+    - Implementar sincronización en operaciones de préstamo
+    - Usar `synchronized` donde sea necesario
+    - Manejar condiciones de carrera
+    - Mostrar estado de operaciones concurrentes en consola
 
 ### Etapa 4: Reportes y Análisis
 - Generar reportes básicos:
-  - Implementar reporte de recursos más prestados
-  - Crear reporte de usuarios más activos
-  - Generar estadísticas de uso por categoría
-  - Diseñar visualización de reportes en consola
+    - Implementar reporte de recursos más prestados
+    - Crear reporte de usuarios más activos
+    - Generar estadísticas de uso por categoría
+    - Diseñar visualización de reportes en consola
 
 - Sistema de alertas:
-  - Implementar alertas por vencimiento de préstamos:
-    - Crear clase `AlertaVencimiento` que monitorea fechas de devolución
-    - Implementar lógica de recordatorios (1 día antes, día del vencimiento)
-    - Mostrar alertas en consola con formato destacado
-    - Permitir renovación desde la alerta
-  
-  - Crear notificaciones de disponibilidad:
-    - Implementar `AlertaDisponibilidad` para recursos reservados
-    - Notificar cuando un recurso reservado está disponible
-    - Mostrar lista de recursos disponibles en consola
-    - Permitir préstamo inmediato desde la notificación
-  
-  - Manejar recordatorios automáticos:
-    - Implementar sistema de recordatorios periódicos
-    - Crear diferentes niveles de urgencia (info, warning, error)
-    - Mostrar historial de alertas en consola
-    - Permitir configuración de preferencias de notificación
+    - Implementar alertas por vencimiento de préstamos:
+        - Crear clase `AlertaVencimiento` que monitorea fechas de devolución
+        - Implementar lógica de recordatorios (1 día antes, día del vencimiento)
+        - Mostrar alertas en consola con formato destacado
+        - Permitir renovación desde la alerta
+
+    - Crear notificaciones de disponibilidad:
+        - Implementar `AlertaDisponibilidad` para recursos reservados
+        - Notificar cuando un recurso reservado está disponible
+        - Mostrar lista de recursos disponibles en consola
+        - Permitir préstamo inmediato desde la notificación
+
+    - Manejar recordatorios automáticos:
+        - Implementar sistema de recordatorios periódicos
+        - Crear diferentes niveles de urgencia (info, warning, error)
+        - Mostrar historial de alertas en consola
+        - Permitir configuración de preferencias de notificación
 
 - Concurrencia en reportes:
-  - Implementar generación de reportes en segundo plano
-  - Usar `ExecutorService` para tareas asíncronas
-  - Manejar concurrencia en acceso a datos
-  - Mostrar progreso de generación de reportes en consola
+    - Implementar generación de reportes en segundo plano
+    - Usar `ExecutorService` para tareas asíncronas
+    - Manejar concurrencia en acceso a datos
+    - Mostrar progreso de generación de reportes en consola
 
 ## 📋 Detalle de Implementación
 
@@ -289,26 +437,26 @@ public class SistemaPrestamos {
 ## ✅ Entrega y Flujo de Trabajo con GitHub
 
 1. **Configuración del Repositorio**
-   - Proteger la rama `main`
-   - Crear template de Issues y Pull Requests
+    - Proteger la rama `main`
+    - Crear template de Issues y Pull Requests
 
 2. **Project Kanban**
-   - `To Do`
-   - `In Progress`
-   - `Code Review`
-   - `Done`
+    - `To Do`
+    - `In Progress`
+    - `Code Review`
+    - `Done`
 
 3. **Milestones**
-   - Etapa 1: Diseño Base
-   - Etapa 2: Gestión de Recursos
-   - Etapa 3: Sistema de Préstamos
-   - Etapa 4: Reportes
+    - Etapa 1: Diseño Base
+    - Etapa 2: Gestión de Recursos
+    - Etapa 3: Sistema de Préstamos
+    - Etapa 4: Reportes
 
 4. **Issues y Pull Requests**
-   - Crear Issues detallados para cada funcionalidad
-   - Asociar cada Issue a un Milestone
-   - Implementar en ramas feature
-   - Revisar código antes de merge
+    - Crear Issues detallados para cada funcionalidad
+    - Asociar cada Issue a un Milestone
+    - Implementar en ramas feature
+    - Revisar código antes de merge
 
 ## 📝 Ejemplo de Issue
 
@@ -357,29 +505,29 @@ Crear el sistema de préstamos que utilice hilos y el patrón productor-consumid
 El uso de herramientas de IA en este trabajo práctico debe seguir las siguientes pautas:
 
 1. **Transparencia**
-   - Documentar claramente qué partes del código fueron generadas con IA
-   - Explicar las modificaciones realizadas al código generado
-   - Mantener un registro de las herramientas utilizadas
+    - Documentar claramente qué partes del código fueron generadas con IA
+    - Explicar las modificaciones realizadas al código generado
+    - Mantener un registro de las herramientas utilizadas
 
 2. **Aprendizaje**
-   - La IA debe usarse como herramienta de aprendizaje, no como reemplazo
-   - Comprender y ser capaz de explicar el código generado
-   - Utilizar la IA para mejorar la comprensión de conceptos
+    - La IA debe usarse como herramienta de aprendizaje, no como reemplazo
+    - Comprender y ser capaz de explicar el código generado
+    - Utilizar la IA para mejorar la comprensión de conceptos
 
 3. **Integridad Académica**
-   - El trabajo final debe reflejar tu aprendizaje y comprensión personal
-   - No se permite la presentación de código generado sin comprensión
-   - Debes poder explicar y defender cualquier parte del código
+    - El trabajo final debe reflejar tu aprendizaje y comprensión personal
+    - No se permite la presentación de código generado sin comprensión
+    - Debes poder explicar y defender cualquier parte del código
 
 4. **Responsabilidad**
-   - Verificar la corrección y seguridad del código generado
-   - Asegurar que el código cumple con los requisitos del proyecto
-   - Mantener la calidad y estándares de código establecidos
+    - Verificar la corrección y seguridad del código generado
+    - Asegurar que el código cumple con los requisitos del proyecto
+    - Mantener la calidad y estándares de código establecidos
 
 5. **Desarrollo Individual**
-   - La IA puede usarse para facilitar tu proceso de aprendizaje
-   - Documentar tu proceso de desarrollo y decisiones tomadas
-   - Mantener un registro de tu progreso y aprendizaje
+    - La IA puede usarse para facilitar tu proceso de aprendizaje
+    - Documentar tu proceso de desarrollo y decisiones tomadas
+    - Mantener un registro de tu progreso y aprendizaje
 
 ### Consecuencias del Uso Inadecuado
 El uso inadecuado de IA puede resultar en:

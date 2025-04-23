@@ -1,0 +1,28 @@
+name: Solicitud de desarrollo
+description: Usar para describir tareas o funcionalidades a implementar
+title: "[Funcionalidad]: Implementar sistema de préstamos concurrente"
+labels: ["enhancement"]
+assignees: []
+
+body:
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción
+      description: Describe brevemente la funcionalidad a implementar.
+      placeholder: Crear el sistema de préstamos que utilice hilos y el patrón productor-consumidor para procesar solicitudes de préstamo en tiempo real.
+    validations:
+      required: true
+
+  - type: textarea
+    id: tareas
+    attributes:
+      label: Tareas
+      description: Lista las tareas a completar para terminar la implementación.
+      placeholder: |
+        - [ ] Implementar `BlockingQueue` para solicitudes de préstamo
+        - [ ] Manejar excepciones adecuadamente
+        - [ ] Compilar código sin errores
+        - [ ] Agregar o actualizar documentación
+    validations:
+      required: true
