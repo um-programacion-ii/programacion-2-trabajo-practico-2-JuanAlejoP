@@ -295,16 +295,63 @@ public class Consola {
     }
 
     private void showResourceOptions(RecursoDigital recurso) {
-        System.out.println("--- Opciones para el recurso ---");
-        if (recurso instanceof Prestable) {
-            System.out.println("P. Prestar recurso");
-        }
+        while (true) {
+            System.out.println("--- Opciones para el recurso ---");
+            System.out.println("Estado actual: " + recurso.getEstado());
 
-        if (recurso instanceof Renovable) {
-            System.out.println("R. Renovar recurso");
-        }
-        if (!(recurso instanceof Prestable) && !(recurso instanceof Renovable)) {
-            System.out.println("!. Este recurso no puede ser prestado ni renovado.");
+            if (recurso instanceof Prestable) {
+                System.out.println("1. Prestar recurso");
+                System.out.println("2. Reservar recurso");
+                System.out.println("3. Devolver recurso");
+            }
+
+            if (recurso instanceof Renovable) {
+                System.out.println("4. Renovar recurso");
+            }
+
+            System.out.println("0. Volver");
+
+            System.out.print("Seleccione una opción: ");
+            String option = scanner.nextLine();
+
+            try {
+                switch (option) {
+                    case "1":
+                        System.out.println("Ingrese el ID del usuario que solicita el préstamo:");
+                        String idUsuarioPrestamo = scanner.nextLine();
+                        Usuario usuarioPrestamo = userManager.searchUserById(idUsuarioPrestamo);
+                        resourceManager.prestarRecurso(recurso.getIdentificador(), usuarioPrestamo);
+                        System.out.println("Préstamo registrado con éxito.");
+                        return;
+                    case "2":
+                        System.out.println("Ingrese el ID del usuario que desea reservar:");
+                        String idUsuarioReserva = scanner.nextLine();
+                        Usuario usuarioReserva = userManager.searchUserById(idUsuarioReserva);
+                        resourceManager.reservarRecurso(recurso.getIdentificador(), usuarioReserva);
+                        System.out.println("Reserva registrada con éxito.");
+                        return;
+                    case "3":
+                        resourceManager.devolverRecurso(recurso.getIdentificador());
+                        System.out.println("Recurso devuelto correctamente.");
+                        return;
+                    case "4":
+                        System.out.println("Ingrese el ID del usuario que desea renovar:");
+                        String idUsuarioRenovacion = scanner.nextLine();
+                        Usuario usuarioRenovacion = userManager.searchUserById(idUsuarioRenovacion);
+                        resourceManager.renovarRecurso(recurso.getIdentificador(), usuarioRenovacion);
+                        System.out.println("Recurso renovado exitosamente.");
+                        return;
+                    case "0":
+                        return;
+                    default:
+                        System.out.println("Opción no válida. Intente de nuevo.");
+                }
+            } catch (RecursoNoDisponibleException e) {
+                System.out.println("Error: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Error inesperado: " + e.getMessage());
+            }
         }
     }
+
 }
