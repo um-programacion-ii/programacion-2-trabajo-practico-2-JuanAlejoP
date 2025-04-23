@@ -3,23 +3,37 @@ import java.util.InputMismatchException;
 import java.util.Collection;
 import java.util.List;
 
+import java.time.format.DateTimeFormatter;
+
 public class Consola {
     private Scanner scanner;
+    private PreferencesManager preferences;
+    private ServicioNotificaciones notifications;
     private GestorUsuarios userManager;
     private GestorRecursos resourceManager;
-    private ServicioNotificaciones notifications;
+    private AsyncReportGenerator asyncGenerator;
+    private AlertScheduler alertScheduler;
 
-    public Consola(ServicioNotificaciones notifications) {
+    public Consola() {
         this.scanner = new Scanner(System.in);
-        this.notifications = notifications;
+        this.preferences = new PreferencesManager();
+        this.notifications = new NotificadorConsola(preferences);
         this.userManager = new GestorUsuarios(notifications);
         this.resourceManager = new GestorRecursos();
+        this.asyncGenerator = new AsyncReportGenerator(new GeneradorReportes(resourceManager, userManager));
+        this.alertScheduler = new AlertScheduler(
+                new AlertaVencimiento(resourceManager, userManager, notifications),
+                new AlertaDisponibilidad(resourceManager, userManager, notifications)
+        );
+        alertScheduler.start();
     }
 
     public void showMainMenu() {
         System.out.println("----- Menú Principal -----");
         System.out.println("1. Gestionar usuarios");
         System.out.println("2. Gestionar recursos");
+        System.out.println("3. Generar reportes");
+        System.out.println("4. Ver alertas");
         System.out.println("0. Salir");
         System.out.print("Ingrese una opción: ");
     }
@@ -30,15 +44,26 @@ public class Consola {
             try {
                 int option = scanner.nextInt();
                 scanner.nextLine();
-                if (option == 1) {
-                    manageUsers();
-                } else if (option == 2) {
-                    manageResources();
-                } else if (option == 0) {
-                    System.out.println("Saliendo...");
-                    break;
-                } else {
-                    System.out.println("Opción inválida");
+                switch (option) {
+                    case 1:
+                        manageUsers();
+                        break;
+                    case 2:
+                        manageResources();
+                        break;
+                    case 3:
+                        // Usar generación de reportes en segundo plano
+                        asyncGenerator.generarReportesEnSegundoPlano();
+                        break;
+                    case 4:
+                        viewAlerts();
+                        break;
+                    case 0:
+                        System.out.println("Saliendo...");
+                        alertScheduler.shutdown();
+                        return;
+                    default:
+                        System.out.println("Opción inválida");
                 }
             } catch (InputMismatchException | RecursoNoDisponibleException e) {
                 System.out.println("Entrada inválida. Por favor ingrese un número.");
@@ -354,4 +379,46 @@ public class Consola {
         }
     }
 
+    private void viewAlerts() {
+        while (true) {
+            System.out.println("--- Menú de Alertas ---");
+            System.out.println("1. Mostrar alertas actuales");
+            System.out.println("2. Ver historial de alertas");
+            System.out.println("3. Configurar preferencias de notificación");
+            System.out.println("0. Volver");
+            System.out.print("Ingrese una opción: ");
+            String opt = scanner.nextLine();
+            switch (opt) {
+                case "1":
+                    new AlertaVencimiento(resourceManager, userManager, notifications).revisarVencimientos();
+                    new AlertaDisponibilidad(resourceManager, userManager, notifications).revisarDisponibilidad();
+                    break;
+                case "2":
+                    List<NotificacionEntry> history = AlertHistory.getHistory();
+                    System.out.println("--- Historial de Alertas ---");
+                    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                    for (NotificacionEntry e : history) {
+                        System.out.printf("[%s] %s - %s (Usuario: %s)%n",
+                                e.getTimestamp().format(fmt), e.getType(), e.getMensaje(), e.getUsuarioId());
+                    }
+                    break;
+                case "3":
+                    for (AlertType type : AlertType.values()) {
+                        System.out.printf("¿Recibir %s? (s/n): ", type);
+                        boolean en = scanner.nextLine().equalsIgnoreCase("s");
+                        preferences.setPreference(userManager.searchUserById(promptUserId()).getId(), type, en);
+                    }
+                    break;
+                case "0":
+                    return;
+                default:
+                    System.out.println("Opción inválida.");
+            }
+        }
+    }
+
+    private String promptUserId() {
+        System.out.print("Ingrese su ID de usuario: ");
+        return scanner.nextLine();
+    }
 }

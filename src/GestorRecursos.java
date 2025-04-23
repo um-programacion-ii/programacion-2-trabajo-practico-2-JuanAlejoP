@@ -1,35 +1,31 @@
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Collection;
 import java.util.List;
-import java.util.Comparator;
-import java.util.stream.Collectors;
 import java.util.Queue;
-import java.util.LinkedList;
-import java.time.LocalDateTime;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
+import java.util.Comparator;
 
 public class GestorRecursos {
-    private Map<String, RecursoDigital> recursos;
-    private Map<String, Prestamo> prestamos;
-    private Map<String, Queue<Reserva>> reservas;
+    private ConcurrentMap<String, RecursoDigital> recursos;
+    private ConcurrentMap<String, Prestamo> prestamos;
+    private ConcurrentMap<String, Queue<Reserva>> reservas;
 
     public GestorRecursos() {
-        this.recursos = new HashMap<>();
-        this.prestamos = new HashMap<>();
-        this.reservas = new HashMap<>();
+        this.recursos = new ConcurrentHashMap<>();
+        this.prestamos = new ConcurrentHashMap<>();
+        this.reservas = new ConcurrentHashMap<>();
     }
 
     public void addNewResource(RecursoDigital recursoDigital) {
-        String id = recursoDigital.getIdentificador();
-        recursos.put(id, recursoDigital);
+        recursos.put(recursoDigital.getIdentificador(), recursoDigital);
     }
 
     public RecursoDigital searchResourceById(String id) throws RecursoNoDisponibleException {
-        RecursoDigital recursoDigital = recursos.get(id);
-        if (recursoDigital == null) {
-            throw new RecursoNoDisponibleException("Recurso con ID " + id + " no encontrado.");
-        }
-        return recursoDigital;
+        RecursoDigital rd = recursos.get(id);
+        if (rd == null) throw new RecursoNoDisponibleException("Recurso con ID " + id + " no encontrado.");
+        return rd;
     }
 
     public Collection<RecursoDigital> listAllResources() {
@@ -61,35 +57,21 @@ public class GestorRecursos {
                 .collect(Collectors.toList());
     }
 
-    // ----------- Préstamos y Reservas -----------
-
+    // Préstamos y Reservas
     public void prestarRecurso(String idRecurso, Usuario usuario) throws RecursoNoDisponibleException {
         RecursoDigital recurso = searchResourceById(idRecurso);
-
-        if (!(recurso instanceof Prestable)) {
-            throw new RecursoNoDisponibleException("Este recurso no puede ser prestado.");
-        }
-
-        if (recurso.getEstado() != EstadoRecurso.DISPONIBLE) {
-            throw new RecursoNoDisponibleException("El recurso no está disponible para préstamo.");
-        }
-
+        if (!(recurso instanceof Prestable)) throw new RecursoNoDisponibleException("Este recurso no puede ser prestado.");
+        if (recurso.getEstado() != EstadoRecurso.DISPONIBLE) throw new RecursoNoDisponibleException("El recurso no está disponible.");
         recurso.actualizarEstado(EstadoRecurso.PRESTADO);
-        Prestamo prestamo = new Prestamo(recurso, usuario);
-        prestamos.put(idRecurso, prestamo);
+        prestamos.put(idRecurso, new Prestamo(recurso, usuario));
     }
 
     public void devolverRecurso(String idRecurso) throws RecursoNoDisponibleException {
         RecursoDigital recurso = searchResourceById(idRecurso);
-
-        if (!prestamos.containsKey(idRecurso)) {
-            throw new RecursoNoDisponibleException("El recurso no está actualmente prestado.");
-        }
-
+        if (!prestamos.containsKey(idRecurso)) throw new RecursoNoDisponibleException("Recurso no está prestado.");
         prestamos.remove(idRecurso);
-
-        Queue<Reserva> colaReservas = reservas.get(idRecurso);
-        if (colaReservas != null && !colaReservas.isEmpty()) {
+        Queue<Reserva> cola = reservas.get(idRecurso);
+        if (cola != null && !cola.isEmpty()) {
             recurso.actualizarEstado(EstadoRecurso.RESERVADO);
         } else {
             recurso.actualizarEstado(EstadoRecurso.DISPONIBLE);
@@ -98,34 +80,17 @@ public class GestorRecursos {
 
     public void reservarRecurso(String idRecurso, Usuario usuario) throws RecursoNoDisponibleException {
         RecursoDigital recurso = searchResourceById(idRecurso);
-
-        if (!(recurso instanceof Prestable)) {
-            throw new RecursoNoDisponibleException("Este recurso no puede ser reservado.");
-        }
-
-        if (recurso.getEstado() == EstadoRecurso.DISPONIBLE) {
-            throw new RecursoNoDisponibleException("El recurso está disponible, no es necesario reservarlo.");
-        }
-
-        reservas.putIfAbsent(idRecurso, new LinkedList<>());
-        reservas.get(idRecurso).add(new Reserva(recurso, usuario));
+        if (!(recurso instanceof Prestable)) throw new RecursoNoDisponibleException("Este recurso no puede reservarse.");
+        if (recurso.getEstado() == EstadoRecurso.DISPONIBLE) throw new RecursoNoDisponibleException("Recurso disponible, reserva no necesaria.");
+        reservas.computeIfAbsent(idRecurso, k -> new ConcurrentLinkedQueue<>()).add(new Reserva(recurso, usuario));
     }
 
     public void renovarRecurso(String idRecurso, Usuario usuario) throws RecursoNoDisponibleException {
         RecursoDigital recurso = searchResourceById(idRecurso);
-
-        if (!(recurso instanceof Renovable)) {
-            throw new RecursoNoDisponibleException("Este recurso no permite renovación.");
-        }
-
+        if (!(recurso instanceof Renovable)) throw new RecursoNoDisponibleException("Este recurso no permite renovación.");
         Prestamo prestamo = prestamos.get(idRecurso);
-        if (prestamo == null || !prestamo.getUsuario().getId().equals(usuario.getId())) {
-            throw new RecursoNoDisponibleException("El recurso no está prestado a este usuario.");
-        }
-
-        // Se renueva agregando 7 días extra
-        LocalDateTime nuevaFechaDevolucion = prestamo.getFechaDevolucion().plusDays(7);
-        prestamos.put(idRecurso, new Prestamo(recurso, usuario));  // recrea el préstamo con nueva fecha
+        if (prestamo == null || !prestamo.getUsuario().getId().equals(usuario.getId())) throw new RecursoNoDisponibleException("No es su préstamo.");
+        prestamos.put(idRecurso, new Prestamo(recurso, usuario));
     }
 
     public Prestamo getPrestamo(String idRecurso) {
@@ -133,6 +98,10 @@ public class GestorRecursos {
     }
 
     public Queue<Reserva> getReservas(String idRecurso) {
-        return reservas.getOrDefault(idRecurso, new LinkedList<>());
+        return reservas.getOrDefault(idRecurso, new ConcurrentLinkedQueue<>());
+    }
+
+    public Collection<Prestamo> getTodosLosPrestamos() {
+        return prestamos.values();
     }
 }
